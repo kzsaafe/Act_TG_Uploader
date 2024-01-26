@@ -49,6 +49,6 @@ jobs:
           BOT_TOKEN="${{ steps.config.outputs.BOT_TOKEN }}"
           
           mkdir $GITHUB_WORKSPACE/telegram
-          cd $GITHUB_WORKSPACE/telegram && git clone https://github.com/fabianonline/telegram.sh
+          cd $GITHUB_WORKSPACE/telegram && git clone https://github.com/kzsaafe/telegram.sh
           ${TELEGRAM_SH} -f ${FILE_PATH} -t ${BOT_TOKEN} -c ${CHAT_ID}
           echo "done!!!"
