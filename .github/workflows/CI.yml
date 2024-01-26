@@ -56,6 +56,6 @@ jobs:
              -F document=@"$GITHUB_WORKSPACE/kzsaaCIup/*" \
              -F parse_mode='Markdown' \
              -F caption="${{ steps.config.outputs.TEXT_TO_SEND }}" \
-             -X POST https://api.telegram.org/bot${BOT_TOKEN}/sendDocument \
-             -F chat_id="${ steps.config.outputs.CHAT_ID}"
+             -X POST https://api.telegram.org/bot${{ steps.config.outputs.BOT_TOKEN}}/sendDocument \
+             -F chat_id="${{ steps.config.outputs.CHAT_ID }}"
              -F topic_id="${{ steps.config.outputs.TOPIC_ID }}
