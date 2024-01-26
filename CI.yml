@@ -1,0 +1,60 @@
+name: kzsaa . ci
+
+on:
+  watch:
+    types: [started]
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Load Configuration
+        uses: falti/dotenv-action@v0.2.5
+        id: kzsaaCI
+        with:
+          path: kzsaaCI.env
+
+      - name: Check Configuration
+        run: |
+          function required () { if ! [[ "$1" ]]; then echo "$2 variable can't be null." && exit 1; fi }
+          required "${{ steps.config.outputs.BOT_TOKEN }}" "BOT_TOKEN kzsaaCI"
+          required "${{ steps.config.outputs.CHAT_ID }}" "CHAT_ID kzsaaCI"
+          required "${{ steps.config.outputs.TOPIC_ID }}" "TOPIC_ID kzsaaCI"
+          required "${{ steps.config.outputs.LINK_FILE_TO_SEND }}" "LINK_FILE_TO_SEND kzsaaCI"
+          required "${{ steps.config.outputs.TEXT_TO_SEND }}" "TEXT_TO_SEND kzsaaCI"
+          
+      - name: Cleanup WS
+        run: |
+          docker rmi `docker images -q`
+          sudo rm -rf /usr/share/dotnet /etc/mysql /etc/php /etc/apt/sources.list.d
+          sudo -E apt-get -y purge azure-cli ghc* zulu* hhvm llvm* firefox* google* dotnet* powershell openjdk* php*
+          sudo -E apt-get update
+          sudo -E apt-get -y autoremove --purge
+          sudo -E apt-get clean
+          df -h
+
+      - name: Setup Initializing
+        run: |
+          sudo apt-get install -y git wget git zip unzip curl axel aria2
+          
+      - name: Downloading File To Upload
+        run: |
+         echo "Downloading File From UrL"
+         echo "Using Aria2c"
+         mkdir $GITHUB_WORKSPACE/kzsaaCIup
+         cd $GITHUB_WORKSPACE/kzsaaCIup && aria2c "${{ steps.config.outputs.LINK_FILE_TO_SEND }}" 
+         
+      - name: Uploading File To Telegram Chat
+        run: |
+         echo "Start Uploading..."
+         curl -4 -s -S -L -w"\n" -o- \
+             -F document=@"$GITHUB_WORKSPACE/kzsaaCIup/*" \
+             -F parse_mode='Markdown' \
+             -F caption="${{ steps.config.outputs.TEXT_TO_SEND }}" \
+             -X POST https://api.telegram.org/bot${BOT_TOKEN}/sendDocument \
+             -F chat_id="${ steps.config.outputs.CHAT_ID}"
+             -F topic_id="${{ steps.config.outputs.TOPIC_ID }}
