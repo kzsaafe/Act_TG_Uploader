@@ -45,7 +45,7 @@ jobs:
           CAPTION="${{ steps.config.outputs.TEXT_TO_SEND }}"
           CHAT_ID="${{ steps.config.outputs.CHAT_ID }}"
           
-          curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendDocument" \
+          curl -s -X POST "https://api.telegram.org/bot${{ steps.config.outputs.BOT_TOKEN}}/sendDocument" \
           -F "chat_id=$CHAT_ID" \
           -F "document=@$FILE_PATH" \
           -F "caption=$CAPTION"
