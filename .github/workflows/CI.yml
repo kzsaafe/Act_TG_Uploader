@@ -58,4 +58,4 @@ jobs:
              -F caption="${{ steps.config.outputs.TEXT_TO_SEND }}" \
              -X POST https://api.telegram.org/bot${{ steps.config.outputs.BOT_TOKEN}}/sendDocument \
              -F chat_id="${{ steps.config.outputs.CHAT_ID }}"
-             -F topic_id="${{ steps.config.outputs.TOPIC_ID }}
+             -F topic_id="${{ steps.config.outputs.TOPIC_ID }}"
