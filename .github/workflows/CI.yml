@@ -15,18 +15,18 @@ jobs:
 
       - name: Load Configuration
         uses: falti/dotenv-action@v1.0.4
-        id: kzsaaCI
+        id: config
         with:
           path: kzsaaCI.env
 
       - name: Check Configuration
         run: |
           function required () { if ! [[ "$1" ]]; then echo "$2 variable can't be null." && exit 1; fi }
-          required "${{ steps.config.outputs.BOT_TOKEN }}" "BOT_TOKEN kzsaaCI"
-          required "${{ steps.config.outputs.CHAT_ID }}" "CHAT_ID kzsaaCI"
-          required "${{ steps.config.outputs.TOPIC_ID }}" "TOPIC_ID kzsaaCI"
-          required "${{ steps.config.outputs.LINK_FILE_TO_SEND }}" "LINK_FILE_TO_SEND kzsaaCI"
-          required "${{ steps.config.outputs.TEXT_TO_SEND }}" "TEXT_TO_SEND kzsaaCI"
+          required "${{ steps.config.outputs.BOT_TOKEN }}" "BOT_TOKEN config"
+          required "${{ steps.config.outputs.CHAT_ID }}" "CHAT_ID config"
+          required "${{ steps.config.outputs.TOPIC_ID }}" "TOPIC_ID config"
+          required "${{ steps.config.outputs.LINK_FILE_TO_SEND }}" "LINK_FILE_TO_SEND config"
+          required "${{ steps.config.outputs.TEXT_TO_SEND }}" "TEXT_TO_SEND config"
           
       - name: Cleanup WS
         run: |
