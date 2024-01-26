@@ -46,7 +46,7 @@ jobs:
           CHAT_ID="${{ steps.config.outputs.CHAT_ID }}"
           TELEGRAM_SC_FOLDER="$GITHUB_WORKSPACE/telegram/telegram.sh"
           TELEGRAM_SH="${TELEGRAM_SC_FOLDER}/telegram"
-          BOT_TOKEN="${{ steps.config.outputs.BOT_TOKEN }}
+          BOT_TOKEN="${{ steps.config.outputs.BOT_TOKEN }}"
           
           mkdir $GITHUB_WORKSPACE/telegram
           cd $GITHUB_WORKSPACE/telegram && git clone https://github.com/fabianonline/telegram.sh
