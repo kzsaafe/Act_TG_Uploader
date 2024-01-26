@@ -44,8 +44,11 @@ jobs:
           FILE_PATH="${{ steps.config.outputs.FILE_PATH }}"
           CAPTION="${{ steps.config.outputs.TEXT_TO_SEND }}"
           CHAT_ID="${{ steps.config.outputs.CHAT_ID }}"
+          TELEGRAM_SC_FOLDER="$GITHUB_WORKSPACE/telegram/telegram.sh"
+          TELEGRAM_SH="${TELEGRAM_SC_FOLDER}/telegram"
+          BOT_TOKEN="${{ steps.config.outputs.BOT_TOKEN }}
           
-          curl -s -X POST "https://api.telegram.org/bot${{ steps.config.outputs.BOT_TOKEN}}/sendDocument" \
-          -F "chat_id=$CHAT_ID" \
-          -F "document=@$FILE_PATH" \
-          -F "caption=$CAPTION"
+          mkdir $GITHUB_WORKSPACE/telegram
+          cd $GITHUB_WORKSPACE/telegram && git clone https://github.com/fabianonline/telegram.sh
+          ${TELEGRAM_SH} -f ${FILE_PATH} -t ${BOT_TOKEN} -c ${CHAT_ID}
+          echo "done!!!"
