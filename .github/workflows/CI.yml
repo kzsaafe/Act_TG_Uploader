@@ -25,6 +25,7 @@ jobs:
           required "${{ steps.config.outputs.BOT_TOKEN }}" "BOT_TOKEN config"
           required "${{ steps.config.outputs.CHAT_ID }}" "CHAT_ID config"
           required "${{ steps.config.outputs.LINK_FILE_TO_SEND }}" "LINK_FILE_TO_SEND config"
+          required "${{ steps.config.outputs.FILE_PATH }}" "FILE_PATH config"
           required "${{ steps.config.outputs.TEXT_TO_SEND }}" "TEXT_TO_SEND config"
           
       - name: Setup Initializing
@@ -40,10 +41,13 @@ jobs:
          
       - name: Uploading File To Telegram Chat
         run: |
-         echo "Start Uploading..."
-         curl -4 -s -S -L -w"\n" -o- \
-             -F document=@"$GITHUB_WORKSPACE/kzsaaCIup/*" \
-             -F parse_mode='Markdown' \
-             -F caption="${{ steps.config.outputs.TEXT_TO_SEND }}" \
-             -X POST https://api.telegram.org/bot${{ steps.config.outputs.BOT_TOKEN}}/sendDocument \
-             -F chat_id="${{ steps.config.outputs.CHAT_ID }}"
+          FILE_PATH="${{ steps.config.outputs.FILE_PATH }}"
+          CAPTION="${{ steps.config.outputs.TEXT_TO_SEND }}"
+          CHAT_ID="${{ steps.config.outputs.CHAT_ID }}"
+           
+          local FILE_PATH="$1"
+          local CAPTION="$2"
+          curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendDocument" \
+          -F "chat_id=$CHAT_ID" \
+          -F "document=@$FILE_PATH" \
+          -F "caption=$CAPTION"
